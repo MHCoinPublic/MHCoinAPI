@@ -31,15 +31,15 @@ paths:
                 properties:
                   last_update:
                     type: number
-                    description: Время генерации ответа
+                    description: Время последнего обновления
                   network:
                     type: object
+                    description: Информация о сети
                     required:
                       - blocks
                       - difficulty
                       - total_emission
                       - users
-                    description: Информация о сети
                     properties:
                       blocks:
                         type: number
@@ -55,11 +55,11 @@ paths:
                         description: Количество зарегестрированных пользователей
                   server:
                     type: object
+                    description: Информация о сервере
                     required:
                       - cpu
                       - ram
                       - version
-                    description: Информация о сервере
                     properties:
                       cpu:
                         type: number
@@ -112,3 +112,56 @@ paths:
                   - users
       operationId: get-rich
       description: Самые богатые пользователи
+  /users/login:
+    post:
+      summary: ''
+      operationId: post-users-login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    description: Статус (ok)
+                  token:
+                    type: string
+                    minLength: 1
+                    description: Токен
+                required:
+                  - status
+                  - token
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+      description: |-
+        Получение токена для дальнейшего взаимодействия с API
+
+        Токен живет 24 часа
+
+        Дальше его надо передать в Header Authorization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                username:
+                  type: string
+                  minLength: 1
+                  description: Ник
+                password:
+                  type: string
+                  minLength: 1
+                  description: |
+                    Пароль
+              required:
+                - username
+                - password
