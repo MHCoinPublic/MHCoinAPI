@@ -76,3 +76,39 @@ paths:
                   - server
       operationId: get-info
       description: 'Информация о нагрузке на CPU, RAM, количество блоков, пользователей, сложности'
+  /rich:
+    get:
+      summary: Список 10 самых богатых пользователей
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  users:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    description: Список пользователей
+                    items:
+                      type: object
+                      description: Пользователь
+                      properties:
+                        balance:
+                          type: number
+                          description: Баланс пользователя
+                        username:
+                          type: string
+                          minLength: 1
+                          description: Ник
+                      required:
+                        - balance
+                        - username
+                required:
+                  - users
+      operationId: get-rich
+      description: Самые богатые пользователи
