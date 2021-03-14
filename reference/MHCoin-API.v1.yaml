@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: MHCoin API
+  version: '1.0'
+  contact:
+    name: Лапки
+    url: 'https://t.me/lapkioff'
+    email: contact@lapkidev.com
+  license:
+    name: 'MHCoin Licence '
+    url: 'https://mhc.lapki.dev/'
+  description: REST Api для работы с сервером MHC (переводы)
+servers:
+  - url: 'https://mhc.lapki.dev/api'
+    description: Сервер на сайте Лапки
+  - url: 'https://mhcoin.duckdns.org/api'
+    description: Оригинальный сервер
+paths:
+  /info:
+    get:
+      summary: Информация о сервере и сети MHCoin
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  last_update:
+                    type: number
+                    description: Время генерации ответа
+                  network:
+                    type: object
+                    required:
+                      - blocks
+                      - difficulty
+                      - total_emission
+                      - users
+                    description: Информация о сети
+                    properties:
+                      blocks:
+                        type: number
+                        description: Количество блоков
+                      difficulty:
+                        type: number
+                        description: Сложность
+                      total_emission:
+                        type: number
+                        description: Всего монет
+                      users:
+                        type: number
+                        description: Количество зарегестрированных пользователей
+                  server:
+                    type: object
+                    required:
+                      - cpu
+                      - ram
+                      - version
+                    description: Информация о сервере
+                    properties:
+                      cpu:
+                        type: number
+                        description: Использование CPU
+                      ram:
+                        type: number
+                        description: Использование RAM
+                      version:
+                        type: number
+                        description: Версия сервера
+                required:
+                  - last_update
+                  - network
+                  - server
+      operationId: get-info
+      description: 'Информация о нагрузке на CPU, RAM, количество блоков, пользователей, сложности'
