@@ -114,7 +114,7 @@ paths:
       description: Самые богатые пользователи
   /users/login:
     post:
-      summary: ''
+      summary: Вход в аккаунт
       operationId: post-users-login
       responses:
         '200':
@@ -165,3 +165,143 @@ paths:
               required:
                 - username
                 - password
+  /users/me:
+    get:
+      summary: Информация об аккаунте
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    description: Статус (ok)
+                  user:
+                    type: object
+                    required:
+                      - balance
+                      - email
+                      - username
+                    description: Пользователь
+                    properties:
+                      balance:
+                        type: string
+                        minLength: 1
+                        description: Текущий баланс аккаунта
+                      email:
+                        type: string
+                        minLength: 1
+                        description: Почта
+                      username:
+                        type: string
+                        minLength: 1
+                        description: Ник
+                required:
+                  - status
+                  - user
+      operationId: get-users-me
+      description: Получение информации о текущем аккаунте
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Токен, полученный из /users/login'
+  /users/me/password:
+    post:
+      summary: Смена пароля
+      operationId: post-users-me-password
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    description: Статус (ok)
+                required:
+                  - status
+      description: Для смены пароля необходим текущий пароль
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Токен, полученный из /users/login'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                password:
+                  type: string
+                  minLength: 1
+                  description: Текущий пароль
+                new_password:
+                  type: string
+                  minLength: 1
+                  description: Новый пароль
+              required:
+                - password
+                - new_password
+  /users/transfer:
+    get:
+      summary: Перевод денег
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    description: Статус (ok)
+                required:
+                  - status
+      operationId: get-users-transfer
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Токен, полученный из /users/login'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                recipient:
+                  type: string
+                  minLength: 1
+                  description: Получатель
+                amount:
+                  type: string
+                  minLength: 1
+                  description: Сумма
+              required:
+                - recipient
+                - amount
+      description: |-
+        Перевод денег другому пользователю
+
+        P.S Вывод средств возможен только через КриптоГуся, через API он не доступен и доступен не будет
