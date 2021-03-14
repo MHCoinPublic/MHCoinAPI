@@ -258,9 +258,9 @@ paths:
                 - password
                 - new_password
   /users/transfer:
-    get:
-      summary: Перевод денег
-      tags: []
+    post:
+      summary: ''
+      operationId: post-users-transfer
       responses:
         '200':
           description: OK
@@ -276,13 +276,16 @@ paths:
                     description: Статус (ok)
                 required:
                   - status
-      operationId: get-users-transfer
+      description: |-
+        Перевод денег другому пользователю
+
+        P.S Вывод средств возможен только через КриптоГуся, через API он не доступен и доступен не будет
       parameters:
         - schema:
             type: string
           in: header
-          name: Authorization
           description: 'Токен, полученный из /users/login'
+          name: Authorization
       requestBody:
         content:
           application/json:
@@ -301,7 +304,3 @@ paths:
               required:
                 - recipient
                 - amount
-      description: |-
-        Перевод денег другому пользователю
-
-        P.S Вывод средств возможен только через КриптоГуся, через API он не доступен и доступен не будет
