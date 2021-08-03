@@ -5,7 +5,7 @@ info:
   contact:
     name: Лапки
     url: 'https://t.me/lapkioff'
-    email: contact@lapkidev.com
+    email: contact@lapki.dev
   license:
     name: 'MHCoin Licence '
     url: 'https://mhc.lapki.dev/'
@@ -13,8 +13,6 @@ info:
 servers:
   - url: 'https://mhc.lapki.dev/api'
     description: Сервер на сайте Лапки
-  - url: 'https://mhcoin.duckdns.org/api'
-    description: Оригинальный сервер
 paths:
   /info:
     get:
@@ -259,7 +257,7 @@ paths:
                 - new_password
   /users/transfer:
     post:
-      summary: ''
+      summary: Перевести монеты
       operationId: post-users-transfer
       responses:
         '200':
@@ -276,10 +274,7 @@ paths:
                     description: Статус (ok)
                 required:
                   - status
-      description: |-
-        Перевод денег другому пользователю
-
-        P.S Вывод средств возможен только через КриптоГуся, через API он не доступен и доступен не будет
+      description: Перевод денег другому пользователю
       parameters:
         - schema:
             type: string
@@ -304,3 +299,79 @@ paths:
               required:
                 - recipient
                 - amount
+  /users/swap:
+    post:
+      summary: Обмен монет в wMHC
+      operationId: post-users-swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    status: OK
+                    txid: '0x0'
+                properties:
+                  status:
+                    type: string
+                    minLength: 1
+                    description: Статус (ok)
+                  txid:
+                    type: string
+                    minLength: 1
+                    description: Txid транзакции в BSC
+                required:
+                  - status
+                  - txid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              x-examples:
+                example-1:
+                  amount: 0
+                  address: '0x0'
+              properties:
+                amount:
+                  type: number
+                  description: Количество монет
+                address:
+                  type: string
+                  minLength: 1
+                  description: Адрес кошелька BSC
+              required:
+                - amount
+                - address
+      description: |-
+        Обмен монет в wMHC
+
+        https://bscscan.com/address/0x8e3c724e2ccc9d058061e451eb7d489e54b3fc7d
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: 'Токен, полученный из /users/login'
+  /users/unswap:
+    post:
+      summary: Обмен wMHC в монеты
+      operationId: post-users-unswap
+      responses:
+        '200':
+          description: OK
+      description: |-
+        Обмен wMHC в монеты. МОЖЕТ БЫТЬ НЕ РЕАЛИЗОВАНО!
+
+        https://bscscan.com/address/0x8e3c724e2ccc9d058061e451eb7d489e54b3fc7d
+      parameters:
+        - schema:
+            type: string
+          in: header
+          description: 'Токен, полученный из /users/login'
+          name: Authorization
